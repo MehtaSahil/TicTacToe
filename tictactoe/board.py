@@ -23,10 +23,8 @@ class Board():
 		self.children = collections.deque()
 
 	def set_board(self, board):
-		"""
 		if len(board) != 9:
 			raise ValueError("invalid board: " + str(len(board)))
-		"""
 		self.board = board
 
 	def add_child(self, child):

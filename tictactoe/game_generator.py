@@ -47,6 +47,8 @@ class GameGenerator():
 
 	def get_inorder_perms(self, board, player):
 		q = collections.deque()
+		return_q = collections.deque()
+
 		q.appendleft(board)
 
 		first_player = player
@@ -65,7 +67,8 @@ class GameGenerator():
 
 		while q:
 			current = q.pop()
-			print current
+			# print current
+			return_q.appendleft(Board(current))
 
 			next_boards = self.simple_perms(current, first_player)
 			for l in next_boards:
@@ -83,16 +86,19 @@ class GameGenerator():
 				nodes_processed = 0
 				node_process_limit *= process_level - 1
 				process_level -= 1
-				print
+
+		return return_q
 
 def Main():
 	q = collections.deque()
 	perm_list = list();
-	for i in range(0, 3):
+	for i in range(0, 9):
 		perm_list.append(-1)
 
 	gen = GameGenerator()
-	gen.get_inorder_perms(perm_list, 1)
+	q = gen.get_inorder_perms(perm_list, 1)
+	while q:
+		print q.pop().board
 
 if __name__ == "__main__":
 	Main()
