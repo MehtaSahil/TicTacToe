@@ -1,6 +1,9 @@
 def Main():
-	tempboard = ['0', '1', '1', '0', '-1', '1', '0', '1', '0']
+	tempboard = [0, 1, 1, 0, -1, 1, 0, 1, 0]
 	gamestate = Board(tempboard)
+
+	gamestate.print_board()
+	print gamestate.value
 
 class Board():
 	"""
@@ -25,6 +28,12 @@ class Board():
 
 	def add_child(self, child):
 		self.children.add(child)
+
+	def print_board(self):
+		temp = self.board
+		print str(temp[0]) + " " + str(temp[1]) + " " + str(temp[2])
+		print str(temp[3]) + " " + str(temp[4]) + " " + str(temp[5])
+		print str(temp[6]) + " " + str(temp[7]) + " " + str(temp[8])
 
 	def is_vertical_win(self, player):
 		temp = self.board
@@ -82,9 +91,9 @@ class Board():
 
 	# assumes computer is X (1)
 	def calc_value(self):
-		if self.is_win_for("1"):
+		if self.is_win_for(1):
 			return 1
-		elif self.is_win_for("0"):
+		elif self.is_win_for(0):
 			return -1
 		else:
 			return 0
