@@ -1,3 +1,5 @@
+import collections
+
 def Main():
 	tempboard = [0, 1, 1, 0, -1, 1, 0, 1, 0]
 	gamestate = Board(tempboard)
@@ -18,12 +20,13 @@ class Board():
 	def __init__(self, board):
 		self.set_board(board)
 		self.value = self.calc_value()
-		self.children = set()
+		self.children = collections.deque()
 
 	def set_board(self, board):
+		"""
 		if len(board) != 9:
 			raise ValueError("invalid board: " + str(len(board)))
-
+		"""
 		self.board = board
 
 	def add_child(self, child):
