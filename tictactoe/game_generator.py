@@ -14,12 +14,6 @@ class GameGenerator():
 		keep track of whose turn it is in the main loop
 			the player will switch when the list of lists
 			has no more states left to process
-
-	BUG : gen_inorder_primes switches player each time it processes
-		an item from the queue
-
-		It should only change player when it has processed a layer
-			of the tree
 	"""
 
 	def get_all_perms(self, board, player):
@@ -78,7 +72,7 @@ class GameGenerator():
 				q.appendleft(l)
 
 			# only change player after exploring
-			# ALL movese for that player
+			# ALL moves for that player
 			nodes_processed += 1
 			if nodes_processed == node_process_limit:
 				if first_player == 1:
@@ -90,13 +84,6 @@ class GameGenerator():
 				node_process_limit *= process_level - 1
 				process_level -= 1
 				print
-
-	def factorial(self, n):
-		to_return = n
-		for i in range(1, n):
-			to_return *= i
-
-		return to_return
 
 def Main():
 	q = collections.deque()
