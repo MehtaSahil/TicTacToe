@@ -54,7 +54,17 @@ class Tree:
 
 		return root
 
+	def print_tree(self):
+		q = collections.deque()
+		q.appendleft(self.root)
+
+		while q:
+			current = q.pop()
+			for c in current.children:
+				print c.board
+				q.appendleft(c)
+
 perm_list = [-1, -1, -1, -1, -1, -1, -1, -1, -1]
 mc_tree = Tree(perm_list, 1)
-for c in mc_tree.root.children:
-	print c.board
+
+mc_tree.print_tree();
