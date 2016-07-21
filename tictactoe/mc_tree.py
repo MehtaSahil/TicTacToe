@@ -3,6 +3,11 @@ from game_generator import GameGenerator
 import collections
 
 class Tree:
+
+	"""
+	TODO : function to propogate weights from the leaves
+	"""
+
 	def __init__(self, startboard, player):
 		self.root = self.build_tree(startboard, player)
 
