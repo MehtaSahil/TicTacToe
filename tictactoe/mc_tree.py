@@ -32,8 +32,8 @@ class Tree:
 		else:
 			first_player = 1
 
-		node_process_limit = len(perm_list)
-		process_level = len(perm_list)
+		node_process_limit = len(startboard)
+		process_level = len(startboard)
 		nodes_processed = 0
 
 		while gs:
@@ -74,7 +74,11 @@ class Tree:
 				print c.board
 				q.appendleft(c)
 
-perm_list = [-1, -1, -1, -1, -1, -1, -1, -1, -1]
-mc_tree = Tree(perm_list, 1)
+def Main():
+	perm_list = [-1, -1, -1, -1, -1, -1, -1, -1, -1]
+	mc_tree = Tree(perm_list, 1)
 
-mc_tree.print_tree();
+	mc_tree.print_tree();
+
+if __name__ == "__main__":
+	Main()
