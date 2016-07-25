@@ -24,10 +24,7 @@ class Tree:
 			gs.appendleft(newboard)
 			root.children.append(newboard)
 
-		if first_player == 1:
-			first_player = 0
-		else:
-			first_player = 1
+		first_player = 1 - first_player
 
 		node_process_limit = len(startboard)
 		process_level = len(startboard)
@@ -43,10 +40,7 @@ class Tree:
 
 			nodes_processed += 1
 			if nodes_processed == node_process_limit:
-				if first_player == 1:
-					first_player = 0
-				else:
-					first_player = 1
+				first_player = 1 - first_player
 
 				nodes_processed = 0
 				node_process_limit *= process_level - 1
