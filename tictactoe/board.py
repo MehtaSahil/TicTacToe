@@ -20,7 +20,7 @@ class Board():
 	def __init__(self, board):
 		self.set_board(board)
 		self.value = self.calc_value()
-		self.children = collections.deque()
+		self.children = None
 
 	def set_board(self, board):
 		if len(board) != 9:
@@ -28,7 +28,9 @@ class Board():
 		self.board = board
 
 	def add_child(self, child):
-		self.children.add(child)
+		if self.children == None:
+			raise Exception("must initialize children before adding")
+		self.children.append(child)
 
 	def print_board(self):
 		temp = self.board

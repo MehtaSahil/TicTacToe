@@ -19,10 +19,13 @@ class Tree:
 		first_player = player
 		root = gs.pop()
 		next_boards = gen.simple_perms(root.board, first_player)
-		for l in next_boards:
-			newboard = Board(l)
-			gs.appendleft(newboard)
-			root.children.append(newboard)
+
+		if len(next_boards) != 0:
+			root.children = collections.deque()
+			for l in next_boards:
+				newboard = Board(l)
+				gs.appendleft(newboard)
+				root.add_child(newboard)
 
 		if first_player == 1:
 			first_player = 0
@@ -36,10 +39,14 @@ class Tree:
 		while gs:
 			current = gs.pop()
 			next_boards = gen.simple_perms(current.board, first_player)
-			for l in next_boards:
-				newboard = Board(l)
-				gs.appendleft(newboard)
-				current.children.append(newboard)
+
+			# if there exist children to add, initialize and add
+			if len(next_boards) != 0:
+				current.children = collections.deque()
+				for l in next_boards:
+					newboard = Board(l)
+					gs.appendleft(newboard)
+					current.add_child(newboard)
 
 			nodes_processed += 1
 			if nodes_processed == node_process_limit:
@@ -60,6 +67,9 @@ class Tree:
 
 		while q:
 			current = q.pop()
+			if current.children == None:
+				continue
+
 			for c in current.children:
 				print c.board
 				q.appendleft(c)
