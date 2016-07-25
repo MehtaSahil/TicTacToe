@@ -35,6 +35,11 @@ class Tree:
 
 		while gs:
 			current = gs.pop()
+
+			# Stop exploring children after one player wins
+			if current.value != 0:
+				continue
+
 			next_boards = gen.simple_perms(current.board, first_player)
 			for l in next_boards:
 				newboard = Board(l)
