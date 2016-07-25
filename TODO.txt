@@ -1,0 +1,19 @@
+board.py:	-set children to None instead of empty queue
+		-adjust add_child for queue instead of set
+		 definition of children
+		-Consider renaming fields to reflect public/private access
+			-getters and setters vs open access
+
+mc_tree.py:	-when adding children, init a collections.deque()
+			-this doesn't happen now because an empty queue
+			 is initialized on Board __init__
+		-use Board's add_child instead of direct access
+		-def method to propogate gamestate values up to top
+			-root should have default value
+			-recursive definition w/ children == None as base
+
+-Create gameplay framework to interact with mc_tree
+	-features:
+		-variable first player (X, O, computer, player)
+		-current gamestate tracker
+		-method to traverse to gamestate after opponent moves
