@@ -37,8 +37,8 @@ class Tree:
 			current = gs.pop()
 
 			# Stop exploring children after one player wins
-			if current.value != 0:
-				continue
+			# if current.value != 0:
+				# continue
 
 			next_boards = gen.simple_perms(current.board, first_player)
 
@@ -103,7 +103,7 @@ def Main():
 	mc_tree = Tree(blank_board, 1)
 
 	mc_tree.prop_vals(mc_tree.root)
-	mc_tree.print_tree()
+	# mc_tree.print_tree()
 
 if __name__ == "__main__":
 	Main()
