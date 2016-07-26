@@ -73,26 +73,14 @@ class Play:
 		print "final gamestate: " + str(gamestate.board)
 
 	def computer_move(self, gamestate):
-		gen = GameGenerator()
-
-		"""
-		TODO : gamestate.children null check
-			fails when the human can tie the game on the final move
-		"""
-
-		# max_value assuming computer plays 1 (X)
-		max_value = -sys.maxint - 1
-		for c in gamestate.children:
-			if c.value > max_value:
-				max_value = c.value
-
+		# If an immediate win is possible, make that move
 		for c in gamestate.children:
 			if c.calc_value() == 1:
 				gamestate = c
 				return gamestate
 
 		"""
-		TODO : if the human can follow my move with a win
+		if the human can follow my move with a win
 			then I should avoid that loss instead of
 			pursuing victory
 		"""
@@ -102,6 +90,11 @@ class Play:
 			if potential_loss:
 				print str(c.board) + " : impending loss"
 
+		"""
+		TODO : don't naively choose the FIRST one that doesn't lose
+			but of the moves that don't lose, choose the one
+			that leads to the highest chance of victory
+		"""
 		if potential_loss:
 			for c in gamestate.children:
 				if not self.setup_computer_loss(c):
@@ -109,6 +102,12 @@ class Play:
 					return gamestate
 
 		# if not defending, choose path of most likely victory
+		# max_value assuming computer plays 1 (X)
+		max_value = -sys.maxint - 1
+		for c in gamestate.children:
+			if c.value > max_value:
+				max_value = c.value
+
 		for c in gamestate.children:
 			if c.value == max_value:
 				gamestate = c
@@ -122,7 +121,8 @@ class Play:
 			return False
 
 		for c in gamestate.children:
-			next_boards = gen.simple_perms(gamestate.board, 0)
+			next_boards = gen.simple_perms(gamestate.board,
+						       self.human_player)
 			if len(next_boards) == 0:
 				continue
 
