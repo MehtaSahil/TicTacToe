@@ -136,8 +136,11 @@ class Play:
 		list_index = self.board_to_list_index(coords)
 		local_gamestate_board[list_index] = self.human_player
 
+		print "desired human move: " + str(local_gamestate_board)
+
 		for c in gamestate.children:
 			# TODO : This doesn't trigger on the final human move?
+			print "comparing desired to: " + str(c.board)
 			if local_gamestate_board == c.board:
 				print "human move: " + str(local_gamestate_board)
 				gamestate = c

@@ -4,13 +4,11 @@ board.py:	-set children to None instead of empty queue
 		-Consider renaming fields to reflect public/private access
 			-getters and setters vs open access
 
-mc_tree.py:	-when adding children, init a collections.deque()
-			-this doesn't happen now because an empty queue
-			 is initialized on Board __init__
-		-use Board's add_child instead of direct access
-		-def method to propogate gamestate values up to top
-			-root should have default value
-			-recursive definition w/ children == None as base
+mc_tree.py:	-when building the tree, the leaves and their parents
+			are generated with the same active player
+			they should switch!
+			-this is causing issues in handling the last
+			 turn of gameplay
 
 -Create gameplay framework to interact with mc_tree
 	-features:
