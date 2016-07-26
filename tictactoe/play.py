@@ -41,30 +41,43 @@ class Play:
 		# True if it's the computer's turn, else False
 		comp_turn = computer_plays_first
 		while True:
-			print
 			if comp_turn:
 				gamestate = self.computer_move(gamestate)
+				print "computer move: " + str(gamestate.board)
 			else:
 				gamestate = self.human_move(gamestate)
-			print str(gamestate.board) + " : " + str(gamestate.value)
+				print "human move: " + str(gamestate.board)
+				print
 
 			comp_turn = not comp_turn
 
 			# if at endgame
-			if ((gamestate.calc_value() == 0
-			    or gamestate.calc_value() == 1
-			    or gamestate.calc_value() == -1)
-			    and gamestate.children == None):
+			if (gamestate.calc_value() == 1
+			    or gamestate.calc_value() == -1):
+				break
+
+			# if tie game AND no more moves
+			if (gamestate.calc_value() == 0
+			    and not(-1 in gamestate.board)):
 				break
 
 		print "game over"
-		print str(gamestate.board) + " : " + str(gamestate.value)
+		gamestate.value = gamestate.calc_value()
+		if gamestate.value == 1:
+			print "X's Win"
+		elif gamestate.value == 0:
+			print "draw"
+		elif gamestate.value == -1:
+			print "O's Win"
+
+		print "final gamestate: " + str(gamestate.board)
 
 	def computer_move(self, gamestate):
 		gen = GameGenerator()
 
 		"""
 		TODO : gamestate.children null check
+			fails when the human can tie the game on the final move
 		"""
 
 		# max_value assuming computer plays 1 (X)
@@ -75,7 +88,6 @@ class Play:
 
 		for c in gamestate.children:
 			if c.calc_value() == 1:
-				print "outright win possible"
 				gamestate = c
 				return gamestate
 
@@ -138,7 +150,6 @@ class Play:
 
 		for c in gamestate.children:
 			if local_gamestate_board == c.board:
-				print "human move: " + str(local_gamestate_board)
 				gamestate = c
 
 		return gamestate
