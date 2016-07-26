@@ -1,11 +1,10 @@
 import collections
 
 def Main():
-	tempboard = [0, 1, 1, 0, -1, 1, 0, 1, 0]
+	tempboard = [1, 0, -1, -1, 1, 1, 0, 1, 0]
 	gamestate = Board(tempboard)
 
-	gamestate.print_board()
-	print gamestate.value
+	print str(gamestate.board) + " : " + str(gamestate.value)
 
 class Board():
 	"""

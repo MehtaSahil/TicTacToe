@@ -70,7 +70,7 @@ class Tree:
 		sum = 0
 
 		if root.children == None:
-			sum += root.value
+			sum = root.value
 		else:
 			for c in root.children:
 				sum += self.prop_vals(c)
