@@ -79,39 +79,27 @@ class Play:
 				gamestate = c
 				return gamestate
 
-		"""
-		if the human can follow my move with a win
-			then I should avoid that loss instead of
-			pursuing victory
-		"""
-		# find out if a move sets up the human for a win
-		for c in gamestate.children:
-			potential_loss = self.setup_computer_loss(c)
-			if potential_loss:
-				print str(c.board) + " : impending loss"
-
-		"""
-		TODO : don't naively choose the FIRST one that doesn't lose
-			but of the moves that don't lose, choose the one
-			that leads to the highest chance of victory
-		"""
-		if potential_loss:
-			for c in gamestate.children:
-				if not self.setup_computer_loss(c):
-					gamestate = c
-					return gamestate
-
 		# if not defending, choose path of most likely victory
-		# max_value assuming computer plays 1 (X)
+		# max_value assuming computer plays 1 (X), otherwise min_value
 		max_value = -sys.maxint - 1
 		for c in gamestate.children:
-			if c.value > max_value:
-				max_value = c.value
+			potential_loss = self.setup_computer_loss(c)
 
+			# only consider moves that don't lose the game
+			if not potential_loss:
+				if c.value > max_value:
+					max_value = c.value
+			elif potential_loss:
+				print str(c.board) + " : impending loss"
+
+		# find the best of the non-losing moves
 		for c in gamestate.children:
-			if c.value == max_value:
+			potential_loss = self.setup_computer_loss(c)
+			if c.value == max_value and (not potential_loss):
 				gamestate = c
+				return gamestate
 
+		print "the computer cannot move without losing"
 		return gamestate
 
 	def setup_computer_loss(self, gamestate):
