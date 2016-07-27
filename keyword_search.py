@@ -1,11 +1,16 @@
+# usage : python __file__ "term1" "term2" ... "termN"
+
 import os
+import sys
+
+command_line_arguments = sys.argv[1:]
 
 # setup params
-print "enter search term (only one)"
-searchterm = str(raw_input())
+searchterm = "|".join(command_line_arguments).replace(" ", "")
+
 include = "*.py"
 exclude = os.path.basename(__file__)
-filename = "%s_find.txt" % searchterm
+filename = "%s_find.txt" % "_".join(command_line_arguments).replace(" ", "")
 
 # construct bash command
 bashcommand = "grep -Ern '%s' --include '%s' --exclude '%s' > '%s'" % (searchterm, include, exclude, filename)
