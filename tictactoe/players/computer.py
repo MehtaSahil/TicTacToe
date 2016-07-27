@@ -52,15 +52,13 @@ class ComputerPlayer:
 		if gamestate.children == None:
 			return False
 
+		# explore potential moves from the human player
 		for c in gamestate.children:
-			next_boards = gen.simple_perms(gamestate.board,
-						       self.human_player)
-			if len(next_boards) == 0:
+			if c.children == None:
 				continue
 
-			for b in next_boards:
-				temp_board = Board(b)
-				if temp_board.calc_value() == -1:
+			for nc in c.children:
+				if nc.is_win_for(self.human_player):
 					return True
 
 		return False

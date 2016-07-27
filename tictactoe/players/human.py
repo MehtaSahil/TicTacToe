@@ -8,6 +8,7 @@ class HumanPlayer:
 	def human_move(self, gamestate):
 		local_gamestate_board = copy.deepcopy(gamestate.board)
 
+		# ask for moves until a valid move is given
 		while (True):
 			print "where did the human play?"
 			user_in = raw_input()
@@ -23,7 +24,9 @@ class HumanPlayer:
 		for c in gamestate.children:
 			if local_gamestate_board == c.board:
 				gamestate = c
+				return gamestate
 
+		print "human move failed"
 		return gamestate
 
 	def board_to_list_index(self, b_i):
