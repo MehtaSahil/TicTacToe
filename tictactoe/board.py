@@ -31,12 +31,6 @@ class Board():
 			raise Exception("must initialize children before adding")
 		self.children.append(child)
 
-	def print_board(self):
-		temp = self.board
-		print str(temp[0]) + " " + str(temp[1]) + " " + str(temp[2])
-		print str(temp[3]) + " " + str(temp[4]) + " " + str(temp[5])
-		print str(temp[6]) + " " + str(temp[7]) + " " + str(temp[8])
-
 	def is_vertical_win(self, player):
 		temp = self.board
 
@@ -99,6 +93,18 @@ class Board():
 			return -1
 		else:
 			return 0
+
+	def is_end_game(self):
+		# if at endgame
+		if (self.is_win_for(1) or self.is_win_for(0)):
+			return True
+
+		# if tie game AND no more moves
+		if (self.calc_value() == 0
+		    and not(-1 in self.board)):
+			return True
+
+		return False
 
 if __name__ == "__main__":
 	Main()
