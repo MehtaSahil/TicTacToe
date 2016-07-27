@@ -1,6 +1,7 @@
 # usage : python __file__ "term1" "term2" ... "termN"
 
 import os
+from subprocess import call
 import sys
 
 command_line_arguments = sys.argv[1:]
@@ -16,6 +17,6 @@ filename = "%s_find.txt" % "_".join(command_line_arguments).replace(" ", "")
 bashcommand = "grep -Ern '%s' --include '%s' --exclude '%s' > '%s'" % (searchterm, include, exclude, filename)
 
 # execute bash command
-os.system(bashcommand)
-os.system("vim %s" % filename)
-os.system("rm %s" % filename)
+call(bashcommand, shell = True)
+call("vim %s" % filename, shell = True)
+call("rm %s" % filename, shell = True)
