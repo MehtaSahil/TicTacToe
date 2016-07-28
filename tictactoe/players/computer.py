@@ -1,6 +1,7 @@
 import os
 import sys
 import collections
+import copy
 
 file_path = os.path.abspath(__file__)
 parent_path = os.path.dirname(os.path.dirname(file_path))
@@ -47,7 +48,7 @@ class ComputerPlayer:
 		# find the best of the non-losing moves
 		max_value_moves = collections.deque()
 		for move in non_immediate_losses:
-			print "%s : %s" % (str(move.board), str(move.value))
+			# print "%s : %s" % (str(move.board), str(move.value))
 			if move.value == max_value:
 				max_value_moves.append(move)
 
@@ -58,9 +59,18 @@ class ComputerPlayer:
 			either move from the max_value set and HOPE
 		"""
 
-		for move in max_value_moves:
-			print "max_values :: %s : setup %s : %s" % (str(move.board), str(self.two_step_setup(move)), str(move.value))
+		"""
+		TODO : Step identifying two_step_setups fails
+		non_two_step_setup = set()
+		temp_max_value_moves = set(copy.deepcopy(max_value_moves))
+		for move in temp_max_value_moves:
+			if not self.two_step_setup(move):
+				non_two_step_setup.add(move)
 
+		print non_two_step_setup
+		"""
+
+		# FIXME: Why does this change if the above block is uncommented?
 		gamestate = max_value_moves.pop()
 		return gamestate
 
@@ -73,13 +83,10 @@ class ComputerPlayer:
 			# if there is a non-losing move to make
 			if not potential_loss:
 				nonlosing_moves.add(c)
-			else:
-				print "%s : impending loss" % str(c.board)
 
 		return nonlosing_moves
 
 	def two_step_setup(self, compmove):
-		pass
 		"""
 		This happens AFTER the immediate loss detection, so skip that
 			*Eventual consolidation*
@@ -94,9 +101,22 @@ class ComputerPlayer:
 
 		for hc in compmove.children:
 			# TODO: This loop is too broad, want only logical move
-			for cc in hc.children:
-				if self.setup_computer_loss(cc):
-					return True
+			# TODO: this is redundant. Pull trap detection out
+			non_immediate_losses = self.get_nonlosing_moves(hc)
+			if len(non_immediate_losses) == 0:
+				return True
+
+			max_value_moves = collections.deque()
+			max_value = -sys.maxint - 1
+			for move in non_immediate_losses:
+				if move.value > max_value:
+					max_value_moves.append(move)
+
+			intended_move = max_value_moves.pop()
+			if self.setup_computer_loss(intended_move):
+				print "future hum move: %s" % str(hc.board)
+				print "future comp move: %s" % str(intended_move.board)
+				return True
 
 		return False
 
