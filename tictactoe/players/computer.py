@@ -16,7 +16,6 @@ class ComputerPlayer:
 	def __init__(self, computer_player):
 		self.computer_player = computer_player
 		self.human_player = 1 - computer_player
-		pass
 
 	def computer_move(self, gamestate):
 		"""
@@ -32,51 +31,44 @@ class ComputerPlayer:
 				gamestate = c
 				return gamestate
 
-		# max_value assuming computer plays 1 (X), otherwise min_value
+		# If the comp is trapped, the game is over
 		non_immediate_losses = self.get_nonlosing_moves(gamestate)
 		if len(non_immediate_losses) == 0:
 			print "The computer cannot move without losing"
 			raise Exception("the computer has given up")
 
-		max_value = -sys.maxint - 1
+		# Prevents looking beyond the 9th turn for two_step_setup
+		final_two_moves = False
 		for move in non_immediate_losses:
-			if move.value > max_value:
-				max_value = move.value
+			if len(move.children) == 1:
+				final_two_moves = True
+				break
 
-		# max_value_moves = set([x for x in non_immediate_losses if x.value == max_value])
+		# No possibility for two_step_setup anymore (not enough turns)
+		# Simply choose the best path forward
+		if final_two_moves:
+			max_value = self.max_value(non_immediate_losses)
+			return self.max_move(non_immediate_losses, max_value)
 
-		# find the best of the non-losing moves
-		max_value_moves = collections.deque()
-		for move in non_immediate_losses:
-			# print "%s : %s" % (str(move.board), str(move.value))
-			if move.value == max_value:
-				max_value_moves.append(move)
+		# Choose the best path that is not a setup
+		valid_moves = [x for x in non_immediate_losses
+			       if not self.two_step_setup(x)]
 
-		"""
-		set for moves in non_immediate_losses that match max_value
-		for each move in the max_value set, discard if a two-move setup
-		if there are no moves that are not two-move setups, choose
-			either move from the max_value set and HOPE
-		"""
+		max_value = self.max_value(valid_moves)
+		return self.max_value_move(valid_moves, max_value)
 
-		"""
-		TODO : Step identifying two_step_setups fails
-		non_two_step_setup = set()
-		temp_max_value_moves = set(copy.deepcopy(max_value_moves))
-		for move in temp_max_value_moves:
-			if not self.two_step_setup(move):
-				non_two_step_setup.add(move)
+	def max_move(self, tosearch, max_value):
+		for m in tosearch:
+			if m.value == max_value:
+				return m
 
-		print non_two_step_setup
-		"""
+		raise Exception("no max value match found")
 
-		# FIXME: Why does this change if the above block is uncommented?
-		gamestate = max_value_moves.pop()
-		return gamestate
+	def max_value(self, tosearch):
+		return max(x.value for x in tosearch)
 
 	def get_nonlosing_moves(self, gamestate):
 		nonlosing_moves = set()
-
 		for c in gamestate.children:
 			potential_loss = self.setup_computer_loss(c)
 
@@ -87,35 +79,10 @@ class ComputerPlayer:
 		return nonlosing_moves
 
 	def two_step_setup(self, compmove):
-		"""
-		This happens AFTER the immediate loss detection, so skip that
-			*Eventual consolidation*
-		Will be given a potential computer move to validate
-			explore the children (human moves) of that move
-				find the move the comp WOULD make in this sit
-					if setup_computer_loss == True
-						return True
-
-		return False
-		"""
-
 		for hc in compmove.children:
-			# TODO: This loop is too broad, want only logical move
-			# TODO: this is redundant. Pull trap detection out
+			# if there are no moves the computer can make
 			non_immediate_losses = self.get_nonlosing_moves(hc)
 			if len(non_immediate_losses) == 0:
-				return True
-
-			max_value_moves = collections.deque()
-			max_value = -sys.maxint - 1
-			for move in non_immediate_losses:
-				if move.value > max_value:
-					max_value_moves.append(move)
-
-			intended_move = max_value_moves.pop()
-			if self.setup_computer_loss(intended_move):
-				print "future hum move: %s" % str(hc.board)
-				print "future comp move: %s" % str(intended_move.board)
 				return True
 
 		return False

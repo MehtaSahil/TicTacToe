@@ -33,6 +33,8 @@ class Game:
 		# True if it's the computer's turn, else False
 		comp_turn = self.computer_plays_first
 		while True:
+			print "==============================================="
+
 			if comp_turn:
 				gamestate = comp.computer_move(gamestate)
 				print "computer move: " + str(gamestate.board)
