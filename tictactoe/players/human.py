@@ -26,8 +26,7 @@ class HumanPlayer:
 				gamestate = c
 				return gamestate
 
-		print "human move failed"
-		return gamestate
+		raise Exception("Human move failed")
 
 	def board_to_list_index(self, b_i):
 		dim = 3

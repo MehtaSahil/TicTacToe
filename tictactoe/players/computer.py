@@ -1,17 +1,3 @@
-import os
-import sys
-import collections
-import copy
-
-file_path = os.path.abspath(__file__)
-parent_path = os.path.dirname(os.path.dirname(file_path))
-sys.path.append(parent_path)
-
-from game_generator import GameGenerator
-from board import Board
-
-# =============================================================================
-
 class ComputerPlayer:
 	def __init__(self, computer_player):
 		self.computer_player = computer_player
@@ -44,7 +30,7 @@ class ComputerPlayer:
 				final_two_moves = True
 				break
 
-		# No possibility for two_step_setup anymore (not enough turns)
+		# No possibility for two_step_setup (not enough turns)
 		# Simply choose the best path forward
 		if final_two_moves:
 			max_value = self.max_value(non_immediate_losses)
@@ -55,7 +41,7 @@ class ComputerPlayer:
 			       if not self.two_step_setup(x)]
 
 		max_value = self.max_value(valid_moves)
-		return self.max_value_move(valid_moves, max_value)
+		return self.max_move(valid_moves, max_value)
 
 	def max_move(self, tosearch, max_value):
 		for m in tosearch:
@@ -88,8 +74,6 @@ class ComputerPlayer:
 		return False
 
 	def setup_computer_loss(self, compmove):
-		gen = GameGenerator()
-
 		if compmove.children == None:
 			return False
 
