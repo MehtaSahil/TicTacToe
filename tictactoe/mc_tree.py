@@ -97,13 +97,3 @@ class Tree:
 
 	def print_node(self, node):
 		print str(node.board) + " : " + str(node.value)
-
-def Main():
-	blank_board = [-1, -1, -1, -1, -1, -1, -1, -1, -1]
-	mc_tree = Tree(blank_board, 1)
-
-	mc_tree.prop_vals(mc_tree.root)
-	# mc_tree.print_tree()
-
-if __name__ == "__main__":
-	Main()

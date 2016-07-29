@@ -58,10 +58,3 @@ class Game:
 			print "O wins"
 		else:
 			print "Draw"
-
-def Main():
-	blank_board = [-1, -1, -1, -1, -1, -1, -1, -1, -1]
-	game = Game(blank_board)
-
-if __name__ == "__main__":
-	Main()
